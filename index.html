@@ -65,6 +65,12 @@ p{margin:0}
 .light{background:var(--paper)}
 .mid{background:var(--concrete)}
 
+.jobs{margin-top:2.2rem;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+.jobs li{list-style:none;padding:1.4rem 1.2rem 1.6rem 0;border-bottom:1px solid var(--line);display:grid;gap:.6rem;align-content:start}
+.jobs{padding:0;margin-bottom:0}
+.jobs svg{width:36px;height:36px;stroke:var(--asphalt);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.jobs h3{font-size:1.35rem}
+.jobs p{color:var(--muted);font-size:.9375rem}
 /* что назвать */
 .need{margin-top:2.2rem;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
 .need article{background:#fff;border-top:6px solid var(--signal);padding:1.4rem 1.4rem 1.6rem}
@@ -117,6 +123,8 @@ footer a{color:var(--signal)}
 /* нижняя панель на телефоне */
 .dock{display:none}
 @media (max-width:900px){
+  .jobs{grid-template-columns:minmax(0,1fr)}
+  .jobs li{padding-right:0}
   .need,.steps{grid-template-columns:minmax(0,1fr)}
   .order__grid{grid-template-columns:minmax(0,1fr)}
   .panels{flex-direction:column;min-height:0}
@@ -151,7 +159,7 @@ footer a{color:var(--signal)}
     </div>
     <div class="hero__head">
       <h1>Эвакуатор, манипулятор и <em>экскаватор-погрузчик</em></h1>
-      <p>Приедем по <span class="todo">&lt;&lt;город и область&gt;&gt;</span>. Скажите, что нужно сделать, и мы назовём цену до выезда.</p>
+      <p>Эвакуация, земляные работы, демонтаж, вывоз мусора и аренда техники с оператором. Приедем по <span class="todo">&lt;&lt;город и область&gt;&gt;</span>, цену назовём до выезда.</p>
     </div>
   </div>
   <div class="panels" role="group" aria-label="Выберите услугу">
@@ -171,6 +179,19 @@ footer a{color:var(--signal)}
 </header>
 
 <main>
+<section class="sec mid" id="jobs">
+  <div class="wrap">
+    <h2>Какие задачи решаем</h2>
+    <p class="lead">Техника и бригада на любую задачу на участке и дороге.</p>
+    <ul class="jobs">
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg><h3>Демонтаж</h3><p>Снесём постройки, разберём фундаменты и ограждения.</p></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15V7h11v8M14 10h4l3 3v2h-7M6 18a2 2 0 100-4 2 2 0 000 4zM17 18a2 2 0 100-4 2 2 0 000 4z"/></svg><h3>Вывоз мусора</h3><p>Погрузим и вывезем мусор и строительные отходы.</p></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M7 20l2-9h6l2 9M9 11l3-6 3 6"/></svg><h3>Земляные работы</h3><p>Траншеи, котлованы, планировка участка.</p></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20c4-1 6-5 8-5s4 4 8 5M12 15V5M9 8l3-3 3 3"/></svg><h3>Благоустройство</h3><p>Подготовим участок и выровняем территорию.</p></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21c0-4 3-6.5 7-6.5s7 2.5 7 6.5"/></svg><h3>Техника с оператором</h3><p>Аренда с водителем на час или на смену.</p></li>
+    </ul>
+  </div>
+</section>
 <section class="sec light" id="need">
   <div class="wrap">
     <h2>Что назвать при звонке, чтобы быстрее посчитать</h2>
@@ -239,7 +260,7 @@ footer a{color:var(--signal)}
       </div>
       <label class="field"><span>Что нужно</span>
         <select class="input" id="svc" name="svc">
-          <option>Эвакуатор</option><option>Манипулятор</option><option>Экскаватор-погрузчик</option><option>Пока не знаю, нужна консультация</option>
+          <option>Эвакуатор</option><option>Манипулятор</option><option>Экскаватор-погрузчик</option><option>Демонтаж</option><option>Вывоз мусора</option><option>Земляные работы</option><option>Аренда техники с оператором</option><option>Пока не знаю, нужна консультация</option>
         </select></label>
       <label class="field"><span>Адрес и что нужно сделать</span><textarea class="input" name="task" rows="3" placeholder="Например: забрать машину с ул. Ленина и отвезти в сервис"></textarea></label>
       <label class="consent"><input type="checkbox" id="agree"><span>Я согласен на обработку персональных данных и ознакомился с <a href="politika.html" target="_blank" rel="noopener">политикой обработки данных</a>.</span></label>
@@ -284,4 +305,5 @@ footer a{color:var(--signal)}
 </script>
 </body>
 </html>
+
 
