@@ -1,0 +1,287 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#17191b">
+<title>Эвакуатор, манипулятор и экскаватор-погрузчик</title>
+<meta name="description" content="Демонстрационный макет: эвакуатор, манипулятор и экскаватор-погрузчик с выездом.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asphalt:#17191b; --graphite:#232629; --steel:#3a3f44; --concrete:#e8e6e1; --paper:#f6f5f1;
+  --signal:#f5b800; --signal-d:#d19b00; --text:#1d2023; --muted:#6a7076; --line:rgba(29,32,35,.16);
+  --todo-bg:#f6e9bd; --todo-ink:#8F7212;
+  --font-display:"Oswald","Arial Narrow",Impact,sans-serif;
+  --font-body:"Golos Text",system-ui,sans-serif;
+  --bar:64px;
+}
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth;scroll-padding-top:12px}
+body{margin:0;background:var(--asphalt);color:var(--text);font:400 1rem/1.6 var(--font-body);-webkit-text-size-adjust:100%}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;line-height:1.02;overflow-wrap:anywhere}
+p{margin:0}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+.wrap{width:min(1180px,100%);margin-inline:auto;padding-inline:max(16px,env(safe-area-inset-left)) max(16px,env(safe-area-inset-right))}
+.todo{background:var(--todo-bg);color:var(--todo-ink);padding:.05em .45em;border-radius:4px;font-weight:500}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 1.7rem;border:0;border-radius:6px;font:600 1rem/1 var(--font-body);text-decoration:none;cursor:pointer;transition:background .2s}
+.btn--sig{background:var(--signal);color:var(--asphalt)}
+.btn--sig:hover{background:#ffcb2e}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* шапка и первый экран */
+.hero{min-height:100svh;min-height:100dvh;display:flex;flex-direction:column;color:#fff;background:var(--asphalt);padding-top:env(safe-area-inset-top)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
+.brand{font:600 1.25rem/1 var(--font-display);text-decoration:none;letter-spacing:.02em}
+.brand i{font-style:normal;color:var(--signal)}
+.top .tel{font-weight:500;font-size:.9375rem;text-decoration:none}
+.hero__head{padding-block:clamp(.8rem,3vh,2rem) clamp(1rem,3vh,2rem)}
+.hero h1{font-size:clamp(2rem,min(6.2vw,9.5vh),5rem);max-width:18ch;letter-spacing:-.005em}
+.hero h1 em{font-style:normal;color:var(--signal)}
+.hero__head p{margin-top:.9rem;color:#c9ccd0;max-width:52ch;font-size:clamp(1rem,1.5vw,1.15rem)}
+.panels{flex:1;display:flex;min-height:240px;gap:3px;background:var(--asphalt)}
+.panel{position:relative;flex:1 1 0;min-width:0;display:flex;align-items:flex-end;border:0;padding:0;color:#fff;text-align:left;cursor:pointer;overflow:hidden;transition:flex-grow .45s ease;font:inherit;background:var(--graphite)}
+.panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease,filter .4s}
+.panel::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(23,25,27,.92) 0%,rgba(23,25,27,.35) 48%,rgba(23,25,27,.05) 100%)}
+.panel__t{position:relative;z-index:2;padding:1.2rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom));width:100%}
+.panel__t b{display:block;font:600 clamp(1.5rem,2.6vw,2.4rem)/1.05 var(--font-display)}
+.panel__t span{display:block;margin-top:.4rem;font-size:.9375rem;color:#d9dce0;max-width:30ch}
+.panel__t u{display:inline-block;margin-top:.8rem;padding:.55rem 1rem;background:var(--signal);color:var(--asphalt);text-decoration:none;font-weight:600;font-size:.9375rem;border-radius:5px}
+.panel:hover{flex-grow:1.35}
+.panel:hover img{transform:scale(1.04)}
+.panel:focus-visible{outline-offset:-6px}
+
+/* общий вид секций */
+.sec{padding-block:clamp(3.2rem,7vw,6rem)}
+.sec h2{font-size:clamp(2rem,4.4vw,3.4rem)}
+.sec .lead{margin-top:.9rem;max-width:56ch;color:var(--muted)}
+.light{background:var(--paper)}
+.mid{background:var(--concrete)}
+
+/* что назвать */
+.need{margin-top:2.2rem;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.need article{background:#fff;border-top:6px solid var(--signal);padding:1.4rem 1.4rem 1.6rem}
+.need h3{font-size:1.7rem}
+.need ul{margin:.9rem 0 0;padding:0;list-style:none;display:grid;gap:.55rem;font-size:.9688rem}
+.need li{position:relative;padding-left:1.2rem}
+.need li::before{content:"";position:absolute;left:0;top:.62em;width:.6rem;height:2px;background:var(--steel)}
+
+/* цены */
+.price{margin-top:2.2rem;width:100%;border-collapse:collapse;background:#fff}
+.price th,.price td{text-align:left;padding:1rem 1.2rem;border-bottom:1px solid var(--line);vertical-align:top}
+.price th{font:600 1.3rem/1.1 var(--font-display);width:38%}
+.price td small{display:block;color:var(--muted);font-size:.875rem}
+.note{margin-top:1.2rem;color:var(--muted);font-size:.9375rem}
+
+/* порядок */
+.steps{margin:2.2rem 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.steps li{display:grid;gap:.5rem;align-content:start}
+.ico{width:56px;height:56px;border-radius:6px;background:var(--signal);display:grid;place-items:center}
+.ico svg{width:28px;height:28px;stroke:var(--asphalt);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.steps h3{font-size:1.6rem}
+.steps p{color:var(--muted);font-size:.9688rem}
+
+/* форма */
+.order{background:var(--graphite);color:#fff}
+.order__grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2rem,6vw,5rem)}
+.order h2{font-size:clamp(2rem,4.4vw,3.4rem)}
+.order .lead{color:#c9ccd0}
+.contacts{margin-top:2rem;display:grid;gap:12px}
+.contacts div{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.contacts b{font-weight:500;color:#c9ccd0;min-width:8rem}
+.order form{background:var(--paper);color:var(--text);border-radius:10px;padding:clamp(1.2rem,3vw,2rem)}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.field{display:block;margin-top:1.1rem}
+.row2 .field{margin-top:0}
+.field>span{display:block;font-weight:500;font-size:.9375rem;margin-bottom:.4rem}
+.input{width:100%;min-height:52px;padding:.8rem 1rem;border-radius:6px;border:1.5px solid #c9c7c0;background:#fff;font:400 1rem/1.4 var(--font-body);color:var(--text)}
+.input:focus{border-color:var(--asphalt);outline:none;box-shadow:0 0 0 3px rgba(245,184,0,.5)}
+textarea.input{min-height:92px;resize:vertical}
+.consent{display:flex;gap:12px;align-items:flex-start;margin-top:1.2rem;font-size:.875rem;line-height:1.5;color:var(--muted)}
+.consent input{flex:none;width:22px;height:22px;margin-top:2px;accent-color:var(--asphalt)}
+.consent a{color:var(--asphalt)}
+.order form .btn{margin-top:1.2rem;width:100%}
+.msg{margin-top:1rem;padding:.9rem 1rem;border-radius:6px;background:#e6efe3;color:#24401f;font-size:.9375rem}
+
+footer{background:var(--asphalt);color:#aab0b6;padding:2rem 0 calc(2rem + var(--bar) + env(safe-area-inset-bottom));font-size:.875rem}
+footer .wrap{display:grid;gap:.6rem}
+footer a{color:var(--signal)}
+
+/* нижняя панель на телефоне */
+.dock{display:none}
+@media (max-width:900px){
+  .need,.steps{grid-template-columns:minmax(0,1fr)}
+  .order__grid{grid-template-columns:minmax(0,1fr)}
+  .panels{flex-direction:column;min-height:0}
+  .panel{flex:1 1 0;min-height:132px}
+  .panel:hover{flex-grow:1}
+  .panel__t{padding:1rem 1.1rem}
+  .panel__t span{display:none}
+  .panel__t u{margin-top:.5rem}
+  .hero h1{font-size:clamp(1.9rem,8.4vw,2.6rem)}
+  .price th{width:auto;display:block;border-bottom:0;padding-bottom:.2rem}
+  .price td{display:block;padding-top:0}
+  .hero{padding-bottom:calc(var(--bar) + 20px + env(safe-area-inset-bottom))}
+  .dock{display:flex;position:fixed;inset:auto 0 0 0;z-index:20;padding:10px max(16px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:rgba(23,25,27,.96);gap:10px}
+  .dock .btn{flex:1;min-height:var(--bar);margin:0}
+}
+@media (max-width:520px){
+  .row2{grid-template-columns:minmax(0,1fr)}
+  .row2 .field+.field{margin-top:1.1rem}
+  .top .tel{display:none}
+  .btn{white-space:normal;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="#top">Спецтехника<i>.</i></a>
+      <a class="tel" href="#order"><span class="todo">&lt;&lt;телефон&gt;&gt;</span></a>
+    </div>
+    <div class="hero__head">
+      <h1>Эвакуатор, манипулятор и <em>экскаватор-погрузчик</em></h1>
+      <p>Приедем по <span class="todo">&lt;&lt;город и область&gt;&gt;</span>. Скажите, что нужно сделать, и мы назовём цену до выезда.</p>
+    </div>
+  </div>
+  <div class="panels" role="group" aria-label="Выберите услугу">
+    <button class="panel" type="button" data-s="Эвакуатор">
+      <img src="assets/evak.jpg" alt="Эвакуатор с платформой перевозит легковой автомобиль" style="object-position:38% 50%" fetchpriority="high">
+      <span class="panel__t"><b>Эвакуатор</b><span>Перевезём легковой автомобиль, если он не едет или попал в аварию.</span><u>Вызвать</u></span>
+    </button>
+    <button class="panel" type="button" data-s="Манипулятор">
+      <img src="assets/manip.jpg" alt="Бортовой грузовик с манипулятором" style="object-position:50% 55%">
+      <span class="panel__t"><b>Манипулятор</b><span>Привезём и поднимем груз: стройматериалы, оборудование, плиты.</span><u>Заказать</u></span>
+    </button>
+    <button class="panel" type="button" data-s="Экскаватор-погрузчик">
+      <img src="assets/pogruzchik.jpg" alt="Жёлтый экскаватор-погрузчик на площадке" style="object-position:50% 70%">
+      <span class="panel__t"><b>Экскаватор-погрузчик</b><span>Выкопаем траншею и котлован, погрузим и перевезём сыпучие материалы.</span><u>Заказать</u></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="sec light" id="need">
+  <div class="wrap">
+    <h2>Что назвать при звонке, чтобы быстрее посчитать</h2>
+    <p class="lead">Чем точнее задача, тем быстрее назовём цену и пришлём технику.</p>
+    <div class="need">
+      <article><h3>Эвакуатор</h3><ul>
+        <li>Марка и модель машины</li>
+        <li>Едет ли она сама и крутятся ли колёса</li>
+        <li>Где стоит и куда её отвезти</li>
+        <li>Есть ли свободный подъезд</li></ul></article>
+      <article><h3>Манипулятор</h3><ul>
+        <li>Что везём или поднимаем</li>
+        <li>Вес и размеры груза</li>
+        <li>Адрес погрузки и разгрузки</li>
+        <li>Куда ставить груз: на землю, на этаж, в кузов</li></ul></article>
+      <article><h3>Экскаватор-погрузчик</h3><ul>
+        <li>Вид работ: траншея, котлован, погрузка, расчистка</li>
+        <li>Объём или размеры работ</li>
+        <li>Адрес и подъезд для техники</li>
+        <li>Грунт и есть ли коммуникации под землёй</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec mid" id="price">
+  <div class="wrap">
+    <h2>Стоимость</h2>
+    <p class="lead">Точную цену называем после вашего звонка: она зависит от задачи и расстояния.</p>
+    <table class="price">
+      <tr><th>Эвакуатор</th><td><span class="todo">&lt;&lt;цена по городу и за городом: запросить у заказчика&gt;&gt;</span></td></tr>
+      <tr><th>Манипулятор</th><td><span class="todo">&lt;&lt;цена за час, минимальный заказ: запросить у заказчика&gt;&gt;</span></td></tr>
+      <tr><th>Экскаватор-погрузчик</th><td><span class="todo">&lt;&lt;цена за час, минимальный заказ: запросить у заказчика&gt;&gt;</span></td></tr>
+    </table>
+    <p class="note">Характеристики техники (грузоподъёмность, длина платформы, вылет стрелы, объём ковша): <span class="todo">&lt;&lt;запросить у заказчика&gt;&gt;</span></p>
+  </div>
+</section>
+
+<section class="sec light" id="how">
+  <div class="wrap">
+    <h2>Как заказать</h2>
+    <ol class="steps">
+      <li><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span><h3>Позвоните или напишите</h3><p>Назовите задачу и адрес. Если удобнее, оставьте заявку на сайте.</p></li>
+      <li><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M7 8l5-5 5 5M5 21h14"/></svg></span><h3>Согласуем цену</h3><p>Назовём стоимость до выезда, чтобы не было неожиданностей на месте.</p></li>
+      <li><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15V7h11v8M14 10h4l3 3v2h-7M6 18a2 2 0 100-4 2 2 0 000 4zM17 18a2 2 0 100-4 2 2 0 000 4z"/></svg></span><h3>Приезжаем</h3><p>Время подачи техники: <span class="todo">&lt;&lt;запросить у заказчика&gt;&gt;</span></p></li>
+    </ol>
+    <p class="note">Оплата: <span class="todo">&lt;&lt;наличные, перевод, счёт для организаций: запросить&gt;&gt;</span> · Работаем с организациями и частными лицами: <span class="todo">&lt;&lt;уточнить&gt;&gt;</span></p>
+  </div>
+</section>
+
+<section class="sec order" id="order">
+  <div class="wrap order__grid">
+    <div>
+      <h2>Оставьте заявку</h2>
+      <p class="lead">Перезвоним и уточним детали.</p>
+      <div class="contacts">
+        <div><b>Телефон</b><span class="todo">&lt;&lt;запросить у заказчика&gt;&gt;</span></div>
+        <div><b>Мессенджеры</b><span class="todo">&lt;&lt;Telegram, MAX, ВК: запросить ссылки&gt;&gt;</span></div>
+        <div><b>Работаем</b><span class="todo">&lt;&lt;режим работы: запросить&gt;&gt;</span></div>
+        <div><b>Где работаем</b><span class="todo">&lt;&lt;город и радиус выезда: запросить&gt;&gt;</span></div>
+      </div>
+    </div>
+    <form id="form" novalidate>
+      <div class="row2">
+        <label class="field"><span>Имя</span><input class="input" name="name" autocomplete="name" required></label>
+        <label class="field"><span>Телефон</span><input class="input" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7" required></label>
+      </div>
+      <label class="field"><span>Что нужно</span>
+        <select class="input" id="svc" name="svc">
+          <option>Эвакуатор</option><option>Манипулятор</option><option>Экскаватор-погрузчик</option><option>Пока не знаю, нужна консультация</option>
+        </select></label>
+      <label class="field"><span>Адрес и что нужно сделать</span><textarea class="input" name="task" rows="3" placeholder="Например: забрать машину с ул. Ленина и отвезти в сервис"></textarea></label>
+      <label class="consent"><input type="checkbox" id="agree"><span>Я согласен на обработку персональных данных и ознакомился с <a href="politika.html" target="_blank" rel="noopener">политикой обработки данных</a>.</span></label>
+      <button class="btn btn--sig" type="submit" id="send" disabled>Отправить заявку</button>
+      <p class="msg" id="msg" hidden></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Демонстрационный макет, не является официальным сайтом организации.</span>
+    <span>Реквизиты оператора персональных данных: <span class="todo">&lt;&lt;запросить у заказчика&gt;&gt;</span></span>
+    <a href="politika.html">Политика обработки персональных данных</a>
+  </div>
+</footer>
+
+<div class="dock"><a class="btn btn--sig" href="#order">Оставить заявку</a></div>
+
+<script>
+(function(){
+  var svc=document.getElementById('svc');
+  [].forEach.call(document.querySelectorAll('.panel'),function(p){
+    p.addEventListener('click',function(){
+      svc.value=p.dataset.s;
+      document.getElementById('order').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+    });
+  });
+  var agree=document.getElementById('agree'), send=document.getElementById('send'), msg=document.getElementById('msg'), form=document.getElementById('form');
+  agree.addEventListener('change',function(){send.disabled=!agree.checked});
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!agree.checked) return;
+    var n=form.elements.name.value.trim(), p=form.elements.phone.value.replace(/\D/g,'');
+    msg.hidden=false;
+    if(!n||p.length<10){msg.textContent='Укажите имя и телефон полностью.';msg.style.background='#f4e1de';msg.style.color='#6c241a';return}
+    msg.style.background='';msg.style.color='';
+    msg.textContent='Это демонстрационный макет: заявка никуда не отправляется. На рабочем сайте она придёт вам в Telegram или на почту.';
+  });
+})();
+</script>
+</body>
+</html>
+
